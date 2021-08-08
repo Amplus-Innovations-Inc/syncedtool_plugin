@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    body {
+        width: 300px;
+        border: 1px solid black;
+      }
+      button{
+        margin:5px;
+        display:block;
+        width: 100px;
+      }
+      button {
+        color: #1d1e1f;
+        background-color: #80828a;
+        border: 1px solid #1D9AF2;
+        border-radius: 4px;
+        padding: 0 15px;
+        cursor: pointer;
+        height:32px;
+        font-size:14px;
+        transition: all 0.2s ease-in-out;
+        }
+        button:hover {
+        transform: scale(1.1);
+        }
+        #myProgress {
+            width: 100%;
+            background-color: #ddd;
+          }
+          
+          #myBar {
+            width: 0%;
+            height: 30px;
+            background-color: #04AA6D;
+          }
+</style>
+
+<body>
+    <script src="jquery.min.js"></script>
+    <script src="background.js"></script>
+    <script src="papaparse.min.js"></script>
+    <form>
+        <input type="file" id="email_csv"accept=".csv" hidden/>
+        <div>
+            <button id="email-upload-button">Email CSV</button>
+        </div>
+        
+        <input type="file" id="link_csv"accept=".csv" hidden/>
+        <div>
+            <button id="link-upload-button">Link CSV</button>
+        </div>
+        
+        <button type"submit" id="submit-file">Submit</button>
+    </form>
+    <div class="row" id="parsed_csv_list"></div>
+    <div id="myProgress">
+        <div id="myBar"></div>
+      </div>
+
+</body>
+
+</html>
