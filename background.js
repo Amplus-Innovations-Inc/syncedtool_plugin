@@ -19,8 +19,9 @@ $(document).ready(function () {
                   "email-upload-button"
                 ).style.background = "#e05b0d";
                 document.getElementById("email-upload-button").disabled = false;
+                document.getElementById("alert-message").style.color = "red";
                 document.getElementById("alert-message").innerHTML =
-                  "Invalid email detected on row " + (i + 1);
+                  "Invalid email detected on row " + (i + 1) + "!";
                 email_array = [];
                 document.getElementById("email-upload-button").innerHTML =
                   "Email CSV";
@@ -63,6 +64,30 @@ $(document).ready(function () {
             console.log(data);
             for (i = 1; i < data.length - 1; i++) {
               var cells = data[i].join(",").split(",");
+              if (cells.length != 2) {
+                document.getElementById("link-upload-button").style.background =
+                  "#e05b0d";
+                document.getElementById("link-upload-button").disabled = false;
+                document.getElementById("alert-message").style.color = "red";
+                document.getElementById("alert-message").innerHTML =
+                  "Invalid link file format!";
+                link_array = [];
+                document.getElementById("link-upload-button").innerHTML =
+                  "Link CSV";
+                return;
+              }
+              if (cells[1].split("/shares/file/") == 1) {
+                document.getElementById("link-upload-button").style.background =
+                  "#e05b0d";
+                document.getElementById("link-upload-button").disabled = false;
+                document.getElementById("alert-message").style.color = "red";
+                document.getElementById("alert-message").innerHTML =
+                  "Invalid link detected on row " + (i + 1) + "!";
+                link_array = [];
+                document.getElementById("link-upload-button").innerHTML =
+                  "Link CSV";
+                return;
+              }
               console.log(cells[1].split("/shares/file/")[1].replace("/", ""));
               link_array.push(
                 cells[1].split("/shares/file/")[1].replace("/", "")
@@ -71,6 +96,7 @@ $(document).ready(function () {
             document.getElementById("link-upload-button").innerHTML = document
               .getElementById("link_csv")
               .value.replace(/^.*[\\\/]/, "");
+            document.getElementById("alert-message").innerHTML = "";
             if (email_array.length != 0) {
               document.getElementById("submit-file").style.background =
                 "#e05b0d";
@@ -124,8 +150,24 @@ $(document).ready(function () {
           console.log((link_finished / link_array.length / 2) * 100);
           elem.style.width =
             (link_finished / link_array.length / 2) * 100 + "%";
+
+          for (j = 0; j < email_array.length; j++) {
+            //change email var
+            jsonVariable[email_array[j]] = {
+              account_id: email_array[j],
+              account_type: "email",
+              write_access: false, //change
+              delete_access: false, //change
+            };
+          }
           for (i = 0; i < res.subscribers.length; i++) {
             if (res.subscribers[i].subscriber_type != "public") {
+              if (
+                email_array.includes(res.subscribers[i].subscriber.email) ==
+                true
+              ) {
+                delete jsonVariable[res.subscribers[i].subscriber.email];
+              }
               var account_id = res.subscribers[i].subscriber.id;
 
               var account_type = res.subscribers[i].subscriber_type;
@@ -144,15 +186,6 @@ $(document).ready(function () {
               };
             }
           }
-          for (j = 0; j < email_array.length; j++) {
-            //change email var
-            jsonVariable[email_array[j]] = {
-              account_id: email_array[j],
-              account_type: "email",
-              write_access: false,
-              delete_access: false, //change
-            };
-          }
 
           fetch(
             "https://exocloud.syncedtool.ca/shares/" +
@@ -165,7 +198,7 @@ $(document).ready(function () {
                 download_limit: 0,
                 download_notify: false,
                 upload_notify: false,
-                notify_recipients: "new",
+                notify_recipients: "new", //all, new, none
                 message: "",
                 anon_edit: false,
                 subscribers_json: JSON.stringify(jsonVariable),
@@ -181,6 +214,11 @@ $(document).ready(function () {
             console.log((link_finished / link_array.length / 2) * 100);
             elem.style.width =
               (link_finished / link_array.length / 2) * 100 + "%";
+            if ((link_finished / link_array.length / 2) * 100 == 100) {
+              document.getElementById("alert-message").style.color = "black";
+              document.getElementById("alert-message").innerHTML = "Finished!";
+              console.log(jsonVariable);
+            }
           });
         });
     }

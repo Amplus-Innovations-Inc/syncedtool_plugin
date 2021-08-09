@@ -1,83 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
+  </head>
 
-<style>
+  <style>
     body {
-        width: 300px;
-      }
-      button{
-        margin:5px auto;
-        display:block;
-        width: 100px;
-      }
-      button {
-        color: #fafafa;
-        background-color: #e05b0d;
-        border: 1px solid #d4560c;
-        border-radius: 25px;
-        padding: 0 15px;
-        cursor: pointer;
-        height:32px;
-        font-size:14px;
-        transition: all 0.2s ease-in-out;
-        }
-        button:hover {
-        box-shadow: 0 0 0 0.0625rem #4590ff;
-        background-color: #c24f0c;
-        }
-        #myProgress {
-            width: 100%;
-            background-color: #ddd;
-            border-radius: 25px;
-          }
-          
-          #myBar {
-            width: 0%;
-            height: 30px;
-            background-color: #04AA6D;
-            border-radius: 25px;
-          }
-          #submit-file{
-            background-color:grey;
-          }
-          #alert-message{
-            position: absolute;
-            display: block;
-            text-align:center;
-            width: 100%;
-            color: black;
-        }
-</style>
+      width: 300px;
+    }
+    button {
+      margin: 10px auto;
+      display: block;
+      width: 100px;
+    }
+    button {
+      color: #fafafa;
+      background-color: #e05b0d;
+      border: 1px solid #d4560c;
+      border-radius: 25px;
+      padding: 0 15px;
+      cursor: pointer;
+      height: 32px;
+      font-size: 14px;
+      transition: all 0.2s ease-in-out;
+    }
+    button:hover {
+      box-shadow: 0 0 0 0.0625rem #4590ff;
+      background-color: #c24f0c;
+    }
+    #myProgress {
+      width: 100%;
+      background-color: #ddd;
+      border-radius: 25px;
+      margin: 5px;
+    }
 
-<body>
+    #myBar {
+      width: 0%;
+      height: 30px;
+      background-color: #04aa6d;
+      border-radius: 25px;
+    }
+    #submit-file {
+      background-color: grey;
+    }
+    #alert-message {
+      position: absolute;
+      display: block;
+      text-align: center;
+      width: 100%;
+      color: black;
+    }
+
+    .form-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-gap: 10px;
+      border-radius: 5px;
+    }
+    .form-child {
+      border: 1px solid #c24f0c;
+      border-radius: 5px;
+    }
+    .div-labels {
+      text-align: center;
+    }
+  </style>
+
+  <body>
     <script src="jquery.min.js"></script>
     <script src="background.js"></script>
     <script src="papaparse.min.js"></script>
     <form>
-        <input type="file" id="email_csv"accept=".csv" hidden/>
-        <div>
-            <button id="email-upload-button">Email CSV</button>
+      <div class="form-container">
+        <div class="form-child">
+          <div>
+            <h2 class="div-labels">upload</h2>
+            <input type="file" id="email_csv" accept=".csv" hidden />
+            <div>
+              <button id="email-upload-button">Email CSV</button>
+            </div>
+
+            <input type="file" id="link_csv" accept=".csv" hidden />
+            <div>
+              <button id="link-upload-button">Link CSV</button>
+            </div>
+          </div>
         </div>
-        
-        <input type="file" id="link_csv"accept=".csv" hidden/>
-        <div>
-            <button id="link-upload-button">Link CSV</button>
+        <div class="form-child">
+          <h2 class="div-labels">options</h2>
+          <label for="notify">Checkbox:</label>
+          <input type="checkbox" id="notify" />
         </div>
-        
-        <button type="submit" id="submit-file" disabled>Share</button>
-    </form>
-    
-    <div id="myProgress">
-        <span id='alert-message'></span>
-        <div id="myBar"></div>
       </div>
+      <div>
+        <button type="submit" id="submit-file" disabled>Share</button>
+      </div>
+    </form>
 
-</body>
-
+    <div id="myProgress">
+      <span id="alert-message"></span>
+      <div id="myBar"></div>
+    </div>
+  </body>
 </html>
