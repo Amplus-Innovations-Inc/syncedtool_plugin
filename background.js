@@ -153,11 +153,15 @@ $(document).ready(function () {
 
           for (j = 0; j < email_array.length; j++) {
             //change email var
+            var write_access = document.getElementById("write_access").checked;
+            var delete_access =
+              document.getElementById("delete_access").checked;
+            console.log(document.getElementById("write_access").checked);
             jsonVariable[email_array[j]] = {
               account_id: email_array[j],
               account_type: "email",
-              write_access: false, //change
-              delete_access: false, //change
+              write_access: write_access, //change
+              delete_access: delete_access, //change
             };
           }
           for (i = 0; i < res.subscribers.length; i++) {
@@ -186,6 +190,13 @@ $(document).ready(function () {
               };
             }
           }
+          var ele = document.getElementsByName("notify");
+          var notify_recipients = "new";
+          for (i = 0; i < ele.length; i++) {
+            if (ele[i].checked) {
+              notify_recipients = ele[i].value;
+            }
+          }
 
           fetch(
             "https://exocloud.syncedtool.ca/shares/" +
@@ -198,7 +209,7 @@ $(document).ready(function () {
                 download_limit: 0,
                 download_notify: false,
                 upload_notify: false,
-                notify_recipients: "new", //all, new, none
+                notify_recipients: notify_recipients, //all, new, none
                 message: "",
                 anon_edit: false,
                 subscribers_json: JSON.stringify(jsonVariable),

@@ -58,11 +58,11 @@
     .form-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      grid-gap: 10px;
+      grid-gap: 5px;
       border-radius: 5px;
     }
     .form-child {
-      border: 1px solid #c24f0c;
+      border: 1px solid rgb(211, 211, 211);
       border-radius: 5px;
     }
     .div-labels {
@@ -92,8 +92,35 @@
         </div>
         <div class="form-child">
           <h2 class="div-labels">options</h2>
-          <label for="notify">Checkbox:</label>
-          <input type="checkbox" id="notify" />
+          <div>
+            <input
+              type="radio"
+              name="notify"
+              id="notify_new"
+              checked="checked"
+              value="new"
+            />
+            <label for="notify_new">Notify New</label>
+          </div>
+          <div>
+            <input type="radio" name="notify" id="notify_all" value="all" />
+            <label for="notify_all">Notify All</label>
+          </div>
+          <div>
+            <input type="radio" name="notify" id="notify_none" value="none" />
+            <label for="notify_none">Notify None</label>
+          </div>
+          <br />
+          <div>
+            <div>
+              <input type="checkbox" id="write_access" />
+              <label for="write_access">Write Access</label>
+            </div>
+            <div>
+              <input type="checkbox" id="delete_access" />
+              <label for="delete_access">Delete Access</label>
+            </div>
+          </div>
         </div>
       </div>
       <div>
