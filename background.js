@@ -5,6 +5,7 @@ $(document).ready(function () {
     if (document.getElementById("email_csv").value != "") {
       document.getElementById("email-upload-button").style.background = "grey";
       document.getElementById("email-upload-button").disabled = true;
+
       $("#email_csv").parse({
         config: {
           delimiter: "auto",
@@ -21,9 +22,20 @@ $(document).ready(function () {
                 document.getElementById("alert-message").innerHTML =
                   "Invalid email detected on row " + (i + 1);
                 email_array = [];
+                document.getElementById("email-upload-button").innerHTML =
+                  "Email CSV";
                 return;
               }
               email_array.push(cells[0]);
+            }
+            document.getElementById("email-upload-button").innerHTML = document
+              .getElementById("email_csv")
+              .value.replace(/^.*[\\\/]/, "");
+            document.getElementById("alert-message").innerHTML = "";
+            if (link_array.length != 0) {
+              document.getElementById("submit-file").style.background =
+                "#e05b0d";
+              document.getElementById("submit-file").disabled = false;
             }
           },
         },
@@ -37,13 +49,6 @@ $(document).ready(function () {
           console.log("Done with all files");
         },
       });
-    }
-    if (
-      document.getElementById("link_csv").value != "" &&
-      document.getElementById("email_csv").value != ""
-    ) {
-      document.getElementById("submit-file").style.background = "#e05b0d";
-      document.getElementById("submit-file").disabled = false;
     }
   });
   $("#link_csv").on("change", () => {
@@ -63,6 +68,14 @@ $(document).ready(function () {
                 cells[1].split("/shares/file/")[1].replace("/", "")
               );
             }
+            document.getElementById("link-upload-button").innerHTML = document
+              .getElementById("link_csv")
+              .value.replace(/^.*[\\\/]/, "");
+            if (email_array.length != 0) {
+              document.getElementById("submit-file").style.background =
+                "#e05b0d";
+              document.getElementById("submit-file").disabled = false;
+            }
           },
         },
         before: function (file, inputElem) {
@@ -75,13 +88,6 @@ $(document).ready(function () {
           console.log("Done with all files");
         },
       });
-      if (
-        document.getElementById("link_csv").value != "" &&
-        document.getElementById("email_csv").value != ""
-      ) {
-        document.getElementById("submit-file").style.background = "#e05b0d";
-        document.getElementById("submit-file").disabled = false;
-      }
     }
   });
   $("#email-upload-button").on("click", (e) => {
