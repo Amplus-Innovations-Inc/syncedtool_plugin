@@ -1,4 +1,63 @@
 $(document).ready(function () {
+  $("#email_csv").on("change", () => {
+    if (document.getElementById("email_csv").value != "") {
+      document.getElementById("email-upload-button").style.background = "grey";
+      document.getElementById("email-upload-button").disabled = true;
+      $("#email_csv").parse({
+        config: {
+          delimiter: "auto",
+          complete: (results) => {
+            var data = results.data;
+            console.log(data);
+            for (i = 1; i < data.length - 1; i++) {
+              var cells = data[i].join(",").split(",");
+              email_array.push(cells[0]);
+            }
+          },
+        },
+        before: function (file, inputElem) {
+          console.log("Parsing file...", file);
+        },
+        error: function (err, file) {
+          console.log("ERROR:", err, file);
+        },
+        complete: function () {
+          console.log("Done with all files");
+        },
+      });
+    }
+  });
+  $("#link_csv").on("change", () => {
+    if (document.getElementById("link_csv").value != "") {
+      document.getElementById("link-upload-button").style.background = "grey";
+      document.getElementById("link-upload-button").disabled = true;
+      $("#link_csv").parse({
+        config: {
+          delimiter: "auto",
+          complete: (results) => {
+            var data = results.data;
+            console.log(data);
+            for (i = 1; i < data.length - 1; i++) {
+              var cells = data[i].join(",").split(",");
+              console.log(cells[1].split("/shares/file/")[1].replace("/", ""));
+              link_array.push(
+                cells[1].split("/shares/file/")[1].replace("/", "")
+              );
+            }
+          },
+        },
+        before: function (file, inputElem) {
+          console.log("Parsing file...", file);
+        },
+        error: function (err, file) {
+          console.log("ERROR:", err, file);
+        },
+        complete: function () {
+          console.log("Done with all files");
+        },
+      });
+    }
+  });
   $("#email-upload-button").on("click", (e) => {
     e.preventDefault();
 
@@ -15,60 +74,12 @@ $(document).ready(function () {
 
   $("#submit-file").on("click", (e) => {
     e.preventDefault();
-    $("#email_csv").parse({
-      config: {
-        delimiter: "auto",
-        complete: (results) => {
-          var data = results.data;
-          console.log(data);
-          for (i = 1; i < data.length - 1; i++) {
-            var cells = data[i].join(",").split(",");
-            email_array.push(cells[0]);
-          }
-        },
-      },
-      before: function (file, inputElem) {
-        console.log("Parsing file...", file);
-      },
-      error: function (err, file) {
-        console.log("ERROR:", err, file);
-      },
-      complete: function () {
-        console.log("Done with all files");
-      },
-    });
-    $("#link_csv").parse({
-      config: {
-        delimiter: "auto",
-        complete: (results) => {
-          var data = results.data;
-          console.log(data);
-          for (i = 1; i < data.length - 1; i++) {
-            var cells = data[i].join(",").split(",");
-            console.log(cells[1].split("/shares/file/")[1].replace("/", ""));
-            link_array.push(
-              cells[1].split("/shares/file/")[1].replace("/", "")
-            );
-          }
-        },
-      },
-      before: function (file, inputElem) {
-        console.log("Parsing file...", file);
-      },
-      error: function (err, file) {
-        console.log("ERROR:", err, file);
-      },
-      complete: function () {
-        console.log("Done with all files");
-      },
-    });
-    document.getElementById("submit-file").style.background = "grey";
-    var ul = document.createElement("ul");
-    ul.setAttribute("id", "list");
-    document.getElementById("parsed_csv_list").appendChild(ul);
     var link_finished = 0;
     var elem = document.getElementById("myBar");
+
+    console.log(link_array.length);
     for (s = 0; s < link_array.length; s++) {
+      console.log("fetch" + s);
       fetch(
         "https://exocloud.syncedtool.ca/api/2/sharelinks/" +
           link_array[s] + //change link var
@@ -81,6 +92,10 @@ $(document).ready(function () {
           //   node.appendChild(textnode);
           //   document.getElementById("list").appendChild(node);
           var jsonVariable = {};
+          link_finished++;
+          console.log((link_finished / link_array.length / 2) * 100);
+          elem.style.width =
+            (link_finished / link_array.length / 2) * 100 + "%";
           for (i = 0; i < res.subscribers.length; i++) {
             if (res.subscribers[i].subscriber_type != "public") {
               var account_id = res.subscribers[i].subscriber.id;
@@ -101,7 +116,6 @@ $(document).ready(function () {
               };
             }
           }
-          console.log(jsonVariable);
           for (j = 0; j < email_array.length; j++) {
             //change email var
             jsonVariable[email_array[j]] = {
@@ -136,11 +150,13 @@ $(document).ready(function () {
             }
           ).then(() => {
             link_finished++;
-            console.log((link_finished / (link_array.length / 2)) * 100);
+            console.log((link_finished / link_array.length / 2) * 100);
             elem.style.width =
-              (link_finished / (link_array.length / 2)) * 100 + "%";
+              (link_finished / link_array.length / 2) * 100 + "%";
           });
         });
     }
+    document.getElementById("submit-file").style.background = "grey";
+    document.getElementById("submit-file").disabled = true;
   });
 });

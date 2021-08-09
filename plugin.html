@@ -10,7 +10,6 @@
 <style>
     body {
         width: 300px;
-        border: 1px solid black;
       }
       button{
         margin:5px;
@@ -18,10 +17,10 @@
         width: 100px;
       }
       button {
-        color: #1d1e1f;
-        background-color: #80828a;
-        border: 1px solid #1D9AF2;
-        border-radius: 4px;
+        color: #fafafa;
+        background-color: #e05b0d;
+        border: 1px solid #d4560c;
+        border-radius: 25px;
         padding: 0 15px;
         cursor: pointer;
         height:32px;
@@ -29,17 +28,20 @@
         transition: all 0.2s ease-in-out;
         }
         button:hover {
-        transform: scale(1.1);
+        box-shadow: 0 0 0 0.0625rem #4590ff;
+        background-color: #c24f0c;
         }
         #myProgress {
             width: 100%;
             background-color: #ddd;
+            border-radius: 25px;
           }
           
           #myBar {
             width: 0%;
             height: 30px;
             background-color: #04AA6D;
+            border-radius: 25px;
           }
 </style>
 
@@ -58,9 +60,9 @@
             <button id="link-upload-button">Link CSV</button>
         </div>
         
-        <button type"submit" id="submit-file">Submit</button>
+        <button type="submit" id="submit-file">Submit</button>
     </form>
-    <div class="row" id="parsed_csv_list"></div>
+    
     <div id="myProgress">
         <div id="myBar"></div>
       </div>
