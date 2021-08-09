@@ -1,4 +1,6 @@
 $(document).ready(function () {
+  var link_array = [];
+  var email_array = [];
   $("#email_csv").on("change", () => {
     if (document.getElementById("email_csv").value != "") {
       document.getElementById("email-upload-button").style.background = "grey";
@@ -11,6 +13,16 @@ $(document).ready(function () {
             console.log(data);
             for (i = 1; i < data.length - 1; i++) {
               var cells = data[i].join(",").split(",");
+              if (validateEmail(cells[0]) == false) {
+                document.getElementById(
+                  "email-upload-button"
+                ).style.background = "#e05b0d";
+                document.getElementById("email-upload-button").disabled = false;
+                document.getElementById("alert-message").innerHTML =
+                  "Invalid email detected on row " + (i + 1);
+                email_array = [];
+                return;
+              }
               email_array.push(cells[0]);
             }
           },
@@ -25,6 +37,13 @@ $(document).ready(function () {
           console.log("Done with all files");
         },
       });
+    }
+    if (
+      document.getElementById("link_csv").value != "" &&
+      document.getElementById("email_csv").value != ""
+    ) {
+      document.getElementById("submit-file").style.background = "#e05b0d";
+      document.getElementById("submit-file").disabled = false;
     }
   });
   $("#link_csv").on("change", () => {
@@ -56,6 +75,13 @@ $(document).ready(function () {
           console.log("Done with all files");
         },
       });
+      if (
+        document.getElementById("link_csv").value != "" &&
+        document.getElementById("email_csv").value != ""
+      ) {
+        document.getElementById("submit-file").style.background = "#e05b0d";
+        document.getElementById("submit-file").disabled = false;
+      }
     }
   });
   $("#email-upload-button").on("click", (e) => {
@@ -69,9 +95,6 @@ $(document).ready(function () {
     document.querySelector("#link_csv").click();
   });
 
-  var link_array = [];
-  var email_array = [];
-
   $("#submit-file").on("click", (e) => {
     e.preventDefault();
     var link_finished = 0;
@@ -79,7 +102,6 @@ $(document).ready(function () {
 
     console.log(link_array.length);
     for (s = 0; s < link_array.length; s++) {
-      console.log("fetch" + s);
       fetch(
         "https://exocloud.syncedtool.ca/api/2/sharelinks/" +
           link_array[s] + //change link var
@@ -159,4 +181,9 @@ $(document).ready(function () {
     document.getElementById("submit-file").style.background = "grey";
     document.getElementById("submit-file").disabled = true;
   });
+  function validateEmail(email) {
+    const re =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  }
 });

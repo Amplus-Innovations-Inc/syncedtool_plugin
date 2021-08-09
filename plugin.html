@@ -12,7 +12,7 @@
         width: 300px;
       }
       button{
-        margin:5px;
+        margin:5px auto;
         display:block;
         width: 100px;
       }
@@ -43,6 +43,16 @@
             background-color: #04AA6D;
             border-radius: 25px;
           }
+          #submit-file{
+            background-color:grey;
+          }
+          #alert-message{
+            position: absolute;
+            display: block;
+            text-align:center;
+            width: 100%;
+            color: black;
+        }
 </style>
 
 <body>
@@ -60,10 +70,11 @@
             <button id="link-upload-button">Link CSV</button>
         </div>
         
-        <button type="submit" id="submit-file">Submit</button>
+        <button type="submit" id="submit-file" disabled>Share</button>
     </form>
     
     <div id="myProgress">
+        <span id='alert-message'></span>
         <div id="myBar"></div>
       </div>
 
