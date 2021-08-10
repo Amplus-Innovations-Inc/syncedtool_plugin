@@ -35,8 +35,9 @@
     #myProgress {
       width: 100%;
       background-color: #ddd;
-      border-radius: 25px;
-      margin: 5px;
+      border-radius: 10px;
+      margin: 5px auto;
+      display: block;
     }
 
     #myBar {
@@ -81,6 +82,7 @@
     }
     #notify-options {
       margin: 5px;
+      margin-bottom: 15px;
     }
   </style>
 
@@ -127,7 +129,6 @@
             </div>
           </div>
 
-          <br />
           <div>
             <div id="access-options">
               <div>
@@ -142,14 +143,13 @@
           </div>
         </div>
       </div>
+      <div id="myProgress">
+        <span id="alert-message"></span>
+        <div id="myBar"></div>
+      </div>
       <div>
         <button type="submit" id="submit-file" disabled>Share</button>
       </div>
     </form>
-
-    <div id="myProgress">
-      <span id="alert-message"></span>
-      <div id="myBar"></div>
-    </div>
   </body>
 </html>

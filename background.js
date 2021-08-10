@@ -142,10 +142,11 @@ $(document).ready(function () {
 
     console.log(link_array.length);
     for (s = 0; s < link_array.length; s++) {
-      fetch(
+      fetchWithTimeout(
         "https://exocloud.syncedtool.ca/api/2/sharelinks/" +
           link_array[s] + //change link var
-          "?include_subscribers=true"
+          "?include_subscribers=true",
+        { timeout: 5000 }
       )
         .then((res) => res.json())
         .then((res) => {
@@ -206,7 +207,7 @@ $(document).ready(function () {
             }
           }
 
-          fetch(
+          fetchWithTimeout(
             "https://exocloud.syncedtool.ca/shares/" +
               res["id"].toString() +
               "/process_subscribers/",
@@ -223,22 +224,35 @@ $(document).ready(function () {
                 subscribers_json: JSON.stringify(jsonVariable),
               }),
               method: "post",
+              timeout: 5000,
               headers: {
                 "Content-Type":
                   "application/x-www-form-urlencoded; charset=UTF-8",
               },
             }
-          ).then(() => {
-            link_finished++;
-            console.log((link_finished / link_array.length / 2) * 100);
-            elem.style.width =
-              (link_finished / link_array.length / 2) * 100 + "%";
-            if ((link_finished / link_array.length / 2) * 100 == 100) {
-              document.getElementById("alert-message").style.color = "black";
-              document.getElementById("alert-message").innerHTML = "Finished!";
-              console.log(jsonVariable);
-            }
-          });
+          )
+            .then(() => {
+              link_finished++;
+              console.log((link_finished / link_array.length / 2) * 100);
+              elem.style.width =
+                (link_finished / link_array.length / 2) * 100 + "%";
+              if ((link_finished / link_array.length / 2) * 100 == 100) {
+                document.getElementById("alert-message").style.color = "black";
+                document.getElementById("alert-message").innerHTML =
+                  "Finished!";
+                console.log(jsonVariable);
+              }
+            })
+            .catch(() => {
+              document.getElementById("alert-message").style.color = "red";
+              document.getElementById("alert-message").innerHTML =
+                "Error sharing, please try again :(";
+            });
+        })
+        .catch(() => {
+          document.getElementById("alert-message").style.color = "red";
+          document.getElementById("alert-message").innerHTML =
+            "Error sharing, please try again :(";
         });
     }
     document.getElementById("submit-file").style.background = "grey";
@@ -248,5 +262,19 @@ $(document).ready(function () {
     const re =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
+  }
+  async function fetchWithTimeout(resource, options = {}) {
+    const { timeout = 5000 } = options;
+
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeout);
+
+    const response = await fetch(resource, {
+      ...options,
+      signal: controller.signal,
+    });
+    clearTimeout(id);
+
+    return response;
   }
 });
