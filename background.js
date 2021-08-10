@@ -14,20 +14,20 @@ $(document).ready(function () {
             console.log(data);
             for (i = 1; i < data.length - 1; i++) {
               var cells = data[i].join(",").split(",");
-              if (validateEmail(cells[0]) == false) {
+              if (validateEmail(cells[0].replace(" ", "")) == false) {
                 document.getElementById(
                   "email-upload-button"
                 ).style.background = "#e05b0d";
                 document.getElementById("email-upload-button").disabled = false;
                 document.getElementById("alert-message").style.color = "red";
                 document.getElementById("alert-message").innerHTML =
-                  "Invalid email detected on row " + (i + 1) + "!";
+                  "Invalid email on row " + (i + 1) + "!";
                 email_array = [];
                 document.getElementById("email-upload-button").innerHTML =
                   "Email CSV";
                 return;
               }
-              email_array.push(cells[0]);
+              email_array.push(cells[0].replace(" ", ""));
             }
             document.getElementById("email-upload-button").innerHTML = document
               .getElementById("email_csv")
@@ -82,15 +82,23 @@ $(document).ready(function () {
                 document.getElementById("link-upload-button").disabled = false;
                 document.getElementById("alert-message").style.color = "red";
                 document.getElementById("alert-message").innerHTML =
-                  "Invalid link detected on row " + (i + 1) + "!";
+                  "Invalid link on row " + (i + 1) + "!";
                 link_array = [];
                 document.getElementById("link-upload-button").innerHTML =
                   "Link CSV";
                 return;
               }
-              console.log(cells[1].split("/shares/file/")[1].replace("/", ""));
+              console.log(
+                cells[1]
+                  .split("/shares/file/")[1]
+                  .replace("/", "")
+                  .replace(" ", "")
+              );
               link_array.push(
-                cells[1].split("/shares/file/")[1].replace("/", "")
+                cells[1]
+                  .split("/shares/file/")[1]
+                  .replace("/", "")
+                  .replace(" ", "")
               );
             }
             document.getElementById("link-upload-button").innerHTML = document

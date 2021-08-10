@@ -12,24 +12,25 @@
       width: 300px;
     }
     button {
-      margin: 10px auto;
+      margin: auto;
       display: block;
       width: 100px;
     }
     button {
       color: #fafafa;
-      background-color: #e05b0d;
-      border: 1px solid #d4560c;
+      background-color: #f26e21;
+      border: 1px solid #f26e21;
       border-radius: 25px;
       padding: 0 15px;
       cursor: pointer;
       height: 32px;
       font-size: 14px;
       transition: all 0.2s ease-in-out;
+      margin-top: 25px;
     }
     button:hover {
       box-shadow: 0 0 0 0.0625rem #4590ff;
-      background-color: #c24f0c;
+      background-color: #df651e;
     }
     #myProgress {
       width: 100%;
@@ -46,6 +47,8 @@
     }
     #submit-file {
       background-color: grey;
+      margin-top: 10px;
+      border: 1px solid grey;
     }
     #alert-message {
       position: absolute;
@@ -53,20 +56,31 @@
       text-align: center;
       width: 100%;
       color: black;
+      font-size: 12pt;
     }
 
     .form-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-gap: 5px;
-      border-radius: 5px;
     }
     .form-child {
       border: 1px solid rgb(211, 211, 211);
-      border-radius: 5px;
+    }
+    #option-child {
+      border-radius: 0px 10px 10px 0px;
+    }
+    #upload-child {
+      border-radius: 10px 0px 0px 10px;
     }
     .div-labels {
       text-align: center;
+    }
+    #access-options {
+      margin: 5px;
+    }
+    #notify-options {
+      margin: 5px;
     }
   </style>
 
@@ -76,7 +90,7 @@
     <script src="papaparse.min.js"></script>
     <form>
       <div class="form-container">
-        <div class="form-child">
+        <div class="form-child" id="upload-child">
           <div>
             <h2 class="div-labels">upload</h2>
             <input type="file" id="email_csv" accept=".csv" hidden />
@@ -90,35 +104,40 @@
             </div>
           </div>
         </div>
-        <div class="form-child">
+        <div class="form-child" id="option-child">
           <h2 class="div-labels">options</h2>
-          <div>
-            <input
-              type="radio"
-              name="notify"
-              id="notify_new"
-              checked="checked"
-              value="new"
-            />
-            <label for="notify_new">Notify New</label>
-          </div>
-          <div>
-            <input type="radio" name="notify" id="notify_all" value="all" />
-            <label for="notify_all">Notify All</label>
-          </div>
-          <div>
-            <input type="radio" name="notify" id="notify_none" value="none" />
-            <label for="notify_none">Notify None</label>
-          </div>
-          <br />
-          <div>
+          <div id="notify-options">
             <div>
-              <input type="checkbox" id="write_access" />
-              <label for="write_access">Write Access</label>
+              <input
+                type="radio"
+                name="notify"
+                id="notify_new"
+                checked="checked"
+                value="new"
+              />
+              <label for="notify_new">Notify New</label>
             </div>
             <div>
-              <input type="checkbox" id="delete_access" />
-              <label for="delete_access">Delete Access</label>
+              <input type="radio" name="notify" id="notify_all" value="all" />
+              <label for="notify_all">Notify All</label>
+            </div>
+            <div>
+              <input type="radio" name="notify" id="notify_none" value="none" />
+              <label for="notify_none">Notify None</label>
+            </div>
+          </div>
+
+          <br />
+          <div>
+            <div id="access-options">
+              <div>
+                <input type="checkbox" id="write_access" />
+                <label for="write_access">Write Access</label>
+              </div>
+              <div>
+                <input type="checkbox" id="delete_access" />
+                <label for="delete_access">Delete Access</label>
+              </div>
             </div>
           </div>
         </div>
