@@ -25,3 +25,7 @@ The share button and progress bar/feedback area is located on the bottom.
 ### How to use
 
 Both, email and link csv files must be uploaded for the share button to work. An orange button means that the button can be pressed, when the button turns grey it is no longer avaliable.
+
+### Limitations and Best Practices
+
+1. If a guest account has not been made for a email in the CSV file, it is strongly reccomended to make one for the email before using this extension. Not doing so may result in unexpected behaviour.
