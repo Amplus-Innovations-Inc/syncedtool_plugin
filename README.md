@@ -20,6 +20,8 @@ On the left side are two buttons used to upload the link and email csv files, re
 
 On the right are options for notifying users that files have been shared. There are also options for selecting file permissions.
 
+The share button and progress bar/feedback area is located on the bottom.
+
 ### How to use
 
 Both, email and link csv files must be uploaded for the share button to work. An orange button means that the button can be pressed, when the button turns grey it is no longer avaliable.
