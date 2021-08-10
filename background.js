@@ -14,7 +14,7 @@ $(document).ready(function () {
             console.log(data);
             for (i = 1; i < data.length - 1; i++) {
               var cells = data[i].join(",").split(",");
-              if (validateEmail(cells[0].replace(" ", "")) == false) {
+              if (validateEmail(cells[0]) == false) {
                 document.getElementById(
                   "email-upload-button"
                 ).style.background = "#e05b0d";

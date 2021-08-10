@@ -29,3 +29,5 @@ Both, email and link csv files must be uploaded for the share button to work. An
 ### Limitations and Best Practices
 
 1. If an email in the CSV file does not have a cooresponding Guest Account, it is strongly reccomended to create one before proceeding with sharing. Not doing so may result in unexpected behaviour.
+
+2. Ensure there are no spaces in cells.
