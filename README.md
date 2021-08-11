@@ -24,7 +24,7 @@ The share button and progress bar/feedback area is located on the bottom.
 
 ### How to use
 
-1. Use the template csv files to populate them with the data with link and file information.
+1. Use the template csv files included to populate them with link and file information.
 2. Upload link csv containing the links to be shared. Upload the email csv containing the emails.
 3. Select the sharing options
 4. Press **Share**
