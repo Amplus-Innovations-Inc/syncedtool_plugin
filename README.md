@@ -24,10 +24,15 @@ The share button and progress bar/feedback area is located on the bottom.
 
 ### How to use
 
-Both, email and link csv files must be uploaded for the share button to work. An orange button means that the button can be pressed, when the button turns grey it is no longer avaliable.
+1. Use the template csv files to populate them with the data with link and file information.
+2. Upload link csv containing the links to be shared. Upload the email csv containing the emails.
+3. Select the sharing options
+4. Press **Share**
 
 ### Limitations and Best Practices
 
 1. If an email in the CSV file does not have a cooresponding Guest Account, it is strongly reccomended to create one before proceeding with sharing. Not doing so may result in unexpected behaviour.
 
 2. Ensure there are no spaces in cells.
+
+3. If Error sharing occurs, either there is no internet or there is an issue with one or more links in the link csv

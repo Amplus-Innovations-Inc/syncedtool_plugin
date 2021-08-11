@@ -14,7 +14,7 @@ $(document).ready(function () {
             console.log(data);
             for (i = 1; i < data.length - 1; i++) {
               var cells = data[i].join(",").split(",");
-              if (validateEmail(cells[0]) == false) {
+              if (validateEmail(cells[0].replaceAll(" ", "")) == false) {
                 document.getElementById(
                   "email-upload-button"
                 ).style.background = "#e05b0d";
@@ -27,7 +27,7 @@ $(document).ready(function () {
                   "Email CSV";
                 return;
               }
-              email_array.push(cells[0].replace(" ", ""));
+              email_array.push(cells[0].replaceAll(" ", ""));
             }
             document.getElementById("email-upload-button").innerHTML = document
               .getElementById("email_csv")
@@ -92,13 +92,13 @@ $(document).ready(function () {
                 cells[1]
                   .split("/shares/file/")[1]
                   .replace("/", "")
-                  .replace(" ", "")
+                  .replaceAll(" ", "")
               );
               link_array.push(
                 cells[1]
                   .split("/shares/file/")[1]
                   .replace("/", "")
-                  .replace(" ", "")
+                  .replaceAll(" ", "")
               );
             }
             document.getElementById("link-upload-button").innerHTML = document
@@ -145,8 +145,7 @@ $(document).ready(function () {
       fetchWithTimeout(
         "https://exocloud.syncedtool.ca/api/2/sharelinks/" +
           link_array[s] + //change link var
-          "?include_subscribers=true",
-        { timeout: 5000 }
+          "?include_subscribers=true"
       )
         .then((res) => res.json())
         .then((res) => {
@@ -224,7 +223,6 @@ $(document).ready(function () {
                 subscribers_json: JSON.stringify(jsonVariable),
               }),
               method: "post",
-              timeout: 5000,
               headers: {
                 "Content-Type":
                   "application/x-www-form-urlencoded; charset=UTF-8",
@@ -246,13 +244,13 @@ $(document).ready(function () {
             .catch(() => {
               document.getElementById("alert-message").style.color = "red";
               document.getElementById("alert-message").innerHTML =
-                "Error sharing, please try again :(";
+                "Error sharing :(";
             });
         })
         .catch(() => {
           document.getElementById("alert-message").style.color = "red";
           document.getElementById("alert-message").innerHTML =
-            "Error sharing, please try again :(";
+            "Error sharing :(";
         });
     }
     document.getElementById("submit-file").style.background = "grey";
