@@ -31,8 +31,8 @@ The share button and progress bar/feedback area is located on the bottom.
 
 ### Limitations and Best Practices
 
-1. If an email in the CSV file does not have a cooresponding Syncedtool Account, it is strongly reccomended to create one before proceeding with sharing. Not doing so may result in unexpected behaviour.
+1. If an email in the CSV file does not have a associated Syncedtool Account, it is strongly reccomended to create one before proceeding with sharing. Not doing so may result in unexpected behaviour.
 
 2. Ensure there are no spaces in cells.
 
-3. If Error sharing occurs, either there is no internet or there is an issue with one or more links in the link csv
+3. If Error sharing occurs, either there is no internet, there is an issue with one or more links in the link csv, or you are not logged into the Syncedtool account.
