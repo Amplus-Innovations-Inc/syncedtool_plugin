@@ -205,47 +205,59 @@ $(document).ready(function () {
               notify_recipients = ele[i].value;
             }
           }
-
-          fetchWithTimeout(
-            "https://exocloud.syncedtool.ca/shares/" +
-              res["id"].toString() +
-              "/process_subscribers/",
-            {
-              body: new URLSearchParams({
-                login_required: 1,
-                expires: "",
-                download_limit: 0,
-                download_notify: false,
-                upload_notify: false,
-                notify_recipients: notify_recipients, //all, new, none
-                message: "",
-                anon_edit: false,
-                subscribers_json: JSON.stringify(jsonVariable),
-              }),
-              method: "post",
-              headers: {
-                "Content-Type":
-                  "application/x-www-form-urlencoded; charset=UTF-8",
-              },
-            }
-          )
-            .then(() => {
-              link_finished++;
-              console.log((link_finished / link_array.length / 2) * 100);
-              elem.style.width =
-                (link_finished / link_array.length / 2) * 100 + "%";
-              if ((link_finished / link_array.length / 2) * 100 == 100) {
-                document.getElementById("alert-message").style.color = "black";
-                document.getElementById("alert-message").innerHTML =
-                  "Finished!";
-                console.log(jsonVariable);
+          console.log("index " + link_finished);
+          setTimeout(
+            () => {
+              fetchWithTimeout(
+                "https://exocloud.syncedtool.ca/shares/" +
+                  res["id"].toString() +
+                  "/process_subscribers/",
+                {
+                  body: new URLSearchParams({
+                    login_required: 1,
+                    expires: "",
+                    download_limit: 0,
+                    download_notify: false,
+                    upload_notify: false,
+                    notify_recipients: notify_recipients, //all, new, none
+                    message: "",
+                    anon_edit: false,
+                    subscribers_json: JSON.stringify(jsonVariable),
+                  }),
+                  method: "post",
+                  headers: {
+                    "Content-Type":
+                      "application/x-www-form-urlencoded; charset=UTF-8",
+                  },
+                }
+              )
+                .then(() => {
+                  link_finished++;
+                  console.log((link_finished / link_array.length / 2) * 100);
+                  elem.style.width =
+                    (link_finished / link_array.length / 2) * 100 + "%";
+                  if ((link_finished / link_array.length / 2) * 100 == 100) {
+                    document.getElementById("alert-message").style.color =
+                      "black";
+                    document.getElementById("alert-message").innerHTML =
+                      "Finished!";
+                    console.log(jsonVariable);
+                  }
+                })
+                .catch(() => {
+                  document.getElementById("alert-message").style.color = "red";
+                  document.getElementById("alert-message").innerHTML =
+                    "Error sharing :(";
+                });
+            },
+            (() => {
+              if (link_finished != 1) {
+                return 1000;
+              } else {
+                return 10;
               }
-            })
-            .catch(() => {
-              document.getElementById("alert-message").style.color = "red";
-              document.getElementById("alert-message").innerHTML =
-                "Error sharing :(";
-            });
+            })()
+          );
         })
         .catch(() => {
           document.getElementById("alert-message").style.color = "red";
