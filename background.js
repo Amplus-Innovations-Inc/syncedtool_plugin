@@ -143,8 +143,10 @@ $(document).ready(function () {
     console.log(link_array.length);
     share(link_array[0]).then(() => {
       setTimeout(() => {
-        for (s = 1; s < link_array.length; s++) {
-          share(link_array[s]);
+        if (link_array.length > 1) {
+          for (s = 1; s < link_array.length; s++) {
+            share(link_array[s]);
+          }
         }
       }, 600);
     });
@@ -179,10 +181,6 @@ $(document).ready(function () {
     )
       .then((res) => res.json())
       .then((res) => {
-        //   var node = document.createElement("li");
-        //   var textnode = document.createTextNode(res["id"]);
-        //   node.appendChild(textnode);
-        //   document.getElementById("list").appendChild(node);
         var jsonVariable = {};
         link_finished++;
         console.log((link_finished / link_array.length / 2) * 100);
