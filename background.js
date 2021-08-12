@@ -250,13 +250,7 @@ $(document).ready(function () {
                     "Error sharing :(";
                 });
             },
-            (() => {
-              if (link_finished != 1) {
-                return 1000;
-              } else {
-                return 10;
-              }
-            })()
+            link_finished == 1 ? 10 : 2000
           );
         })
         .catch(() => {
@@ -274,7 +268,7 @@ $(document).ready(function () {
     return re.test(String(email).toLowerCase());
   }
   async function fetchWithTimeout(resource, options = {}) {
-    const { timeout = 5000 } = options;
+    const { timeout = 10000 } = options;
 
     const controller = new AbortController();
     const id = setTimeout(() => controller.abort(), timeout);
