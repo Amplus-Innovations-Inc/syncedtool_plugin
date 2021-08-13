@@ -78,7 +78,11 @@ $(document).ready(function () {
                   "Link CSV";
                 return;
               }
-              if (cells[1].split("/shares/file/") == 1) {
+              if (
+                cells[1]
+                  .replaceAll(" ", "")
+                  .match(/([a-zA-Z0-9]){11}(?=(\/|$|\?))/g).length == 0
+              ) {
                 document.getElementById("link-upload-button").style.background =
                   "#e05b0d";
                 document.getElementById("link-upload-button").disabled = false;
@@ -90,18 +94,11 @@ $(document).ready(function () {
                   "Link CSV";
                 return;
               }
-              console.log(
-                cells[1]
-                  .split("/shares/file/")[1]
-                  .replace("/", "")
-                  .replaceAll(" ", "")
-              );
-              link_array.push(
-                cells[1]
-                  .split("/shares/file/")[1]
-                  .replace("/", "")
-                  .replaceAll(" ", "")
-              );
+              var matches = cells[1]
+                .replaceAll(" ", "")
+                .match(/([a-zA-Z0-9]){11}(?=(\/|$|\?))/g);
+              console.log(matches[matches.length - 1]);
+              link_array.push(matches[matches.length - 1]);
             }
             document.getElementById("link-upload-button").innerHTML = document
               .getElementById("link_csv")
@@ -160,7 +157,7 @@ $(document).ready(function () {
     return re.test(String(email).toLowerCase());
   }
   async function fetchWithTimeout(resource, options = {}) {
-    const { timeout = 10000 } = options;
+    const { timeout = 15000 } = options;
 
     const controller = new AbortController();
     const id = setTimeout(() => controller.abort(), timeout);
