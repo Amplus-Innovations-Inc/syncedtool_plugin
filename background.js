@@ -36,7 +36,7 @@ $(document).ready(function () {
               .getElementById("email_csv")
               .value.replace(/^.*[\\\/]/, "");
             document.getElementById("alert-message").innerHTML = "";
-            if (link_array.length != 0) {
+            if (document.getElementById("link-upload-button").disabled) {
               document.getElementById("submit-file").style.background =
                 "#e05b0d";
               document.getElementById("submit-file").disabled = false;
@@ -105,7 +105,7 @@ $(document).ready(function () {
               .getElementById("link_csv")
               .value.replace(/^.*[\\\/]/, "");
             document.getElementById("alert-message").innerHTML = "";
-            if (email_array.length != 0) {
+            if (document.getElementById("email-upload-button").disabled) {
               document.getElementById("submit-file").style.background =
                 "#e05b0d";
               document.getElementById("submit-file").disabled = false;
