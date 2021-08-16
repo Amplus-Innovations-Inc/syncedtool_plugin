@@ -1,6 +1,7 @@
 $(document).ready(function () {
   var link_array = [];
   var email_array = [];
+  var person_array = [];
   var link_finished = 0;
   var elem = document.getElementById("myBar");
   $("#email_csv").on("change", () => {
@@ -138,6 +139,7 @@ $(document).ready(function () {
     e.preventDefault();
 
     console.log(link_array.length);
+    getPerson();
     share(link_array[0]).then(() => {
       setTimeout(() => {
         if (link_array.length > 1) {
@@ -220,6 +222,18 @@ $(document).ready(function () {
             };
           }
         }
+        var write_access = document.getElementById("write_access").checked;
+        var delete_access = document.getElementById("delete_access").checked;
+        for (i = 0; i < person_array.length; i++) {
+          if (!(person_array[i] in jsonVariable)) {
+            jsonVariable[person_array[i]] = {
+              account_id: person_array[i].split("_")[1],
+              account_type: person_array[i].split("_")[0].replace("_", ""),
+              write_access: write_access,
+              delete_access: delete_access,
+            };
+          }
+        }
         var ele = document.getElementsByName("notify");
         var notify_recipients = "new";
         for (i = 0; i < ele.length; i++) {
@@ -274,5 +288,30 @@ $(document).ready(function () {
         document.getElementById("alert-message").innerHTML = "Error sharing :(";
       });
     return response;
+  }
+  async function getPerson() {
+    var len = email_array.length;
+    x = 0;
+    while (x < len) {
+      a = await fetch(
+        "https://exocloud.syncedtool.ca/guests/1479/lookup/?show_email=1&exclude_self=1&term=" +
+          email_array[x]
+      );
+
+      b = await a.json();
+
+      for (y = 0; y < b.length; y++) {
+        if (b[y].account_type == "person") {
+          person_array.push(b[y].account_type + "_" + b[y].value);
+          console.log(email_array[x]);
+          email_array.splice(x, 1);
+
+          x--;
+          len--;
+          break;
+        }
+      }
+      x++;
+    }
   }
 });
