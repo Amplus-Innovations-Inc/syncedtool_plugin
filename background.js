@@ -139,15 +139,16 @@ $(document).ready(function () {
     e.preventDefault();
 
     console.log(link_array.length);
-    getPerson();
-    share(link_array[0]).then(() => {
-      setTimeout(() => {
-        if (link_array.length > 1) {
-          for (s = 1; s < link_array.length; s++) {
-            share(link_array[s]);
+    getPerson().then(() => {
+      share(link_array[0]).then(() => {
+        setTimeout(() => {
+          if (link_array.length > 1) {
+            for (s = 1; s < link_array.length; s++) {
+              share(link_array[s]);
+            }
           }
-        }
-      }, 600);
+        }, 600);
+      });
     });
 
     document.getElementById("submit-file").style.background = "grey";
@@ -313,5 +314,6 @@ $(document).ready(function () {
       }
       x++;
     }
+    return;
   }
 });
