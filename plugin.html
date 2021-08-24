@@ -9,7 +9,7 @@
 
   <style>
     body {
-      width: 300px;
+      width: 360px;
     }
     button {
       margin: auto;
@@ -85,6 +85,18 @@
       margin: 5px;
       margin-bottom: 15px;
     }
+    #mode-selector {
+      margin: 5px;
+      margin-bottom: 15px;
+    }
+    #append-selector {
+      margin: 5px;
+      float: left;
+    }
+    #overwrite-selector {
+      margin: 5px;
+      float: right;
+    }
   </style>
 
   <body>
@@ -109,6 +121,22 @@
         </div>
         <div class="form-child" id="option-child">
           <h2 class="div-labels">options</h2>
+          <div id="mode-selector">
+            <span id="append-selector">
+              <label for="append">Append</label>
+              <input type="radio" name="mode" id="append" value="append" />
+            </span>
+            <span id="overwrite-selector">
+              <input
+                type="radio"
+                name="mode"
+                id="overwrite"
+                value="overwrite"
+                checked="checked"
+              />
+              <label for="overwrite">Overwrite</label>
+            </span>
+          </div>
           <div id="notify-options">
             <div>
               <input

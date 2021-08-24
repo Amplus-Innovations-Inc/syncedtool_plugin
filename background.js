@@ -1,6 +1,7 @@
 $(document).ready(function () {
   var link_array = [];
   var email_array = [];
+  var person_array = [];
   var link_finished = 0;
   var elem = document.getElementById("myBar");
   $("#email_csv").on("change", () => {
@@ -35,7 +36,7 @@ $(document).ready(function () {
               .getElementById("email_csv")
               .value.replace(/^.*[\\\/]/, "");
             document.getElementById("alert-message").innerHTML = "";
-            if (link_array.length != 0) {
+            if (document.getElementById("link-upload-button").disabled) {
               document.getElementById("submit-file").style.background =
                 "#e05b0d";
               document.getElementById("submit-file").disabled = false;
@@ -104,7 +105,7 @@ $(document).ready(function () {
               .getElementById("link_csv")
               .value.replace(/^.*[\\\/]/, "");
             document.getElementById("alert-message").innerHTML = "";
-            if (email_array.length != 0) {
+            if (document.getElementById("email-upload-button").disabled) {
               document.getElementById("submit-file").style.background =
                 "#e05b0d";
               document.getElementById("submit-file").disabled = false;
@@ -138,14 +139,16 @@ $(document).ready(function () {
     e.preventDefault();
 
     console.log(link_array.length);
-    share(link_array[0]).then(() => {
-      setTimeout(() => {
-        if (link_array.length > 1) {
-          for (s = 1; s < link_array.length; s++) {
-            share(link_array[s]);
+    getPerson().then(() => {
+      share(link_array[0]).then(() => {
+        setTimeout(() => {
+          if (link_array.length > 1) {
+            for (s = 1; s < link_array.length; s++) {
+              share(link_array[s]);
+            }
           }
-        }
-      }, 600);
+        }, 600);
+      });
     });
 
     document.getElementById("submit-file").style.background = "grey";
@@ -195,26 +198,42 @@ $(document).ready(function () {
             delete_access: delete_access, //change
           };
         }
-        for (i = 0; i < res.subscribers.length; i++) {
-          if (res.subscribers[i].subscriber_type != "public") {
-            if (
-              email_array.includes(res.subscribers[i].subscriber.email) == true
-            ) {
-              delete jsonVariable[res.subscribers[i].subscriber.email];
+        if (document.getElementsByName("mode")[0].checked == true) {
+          for (i = 0; i < res.subscribers.length; i++) {
+            if (res.subscribers[i].subscriber_type != "public") {
+              if (
+                email_array.includes(res.subscribers[i].subscriber.email) ==
+                true
+              ) {
+                delete jsonVariable[res.subscribers[i].subscriber.email];
+              }
+              var account_id = res.subscribers[i].subscriber.id;
+
+              var account_type = res.subscribers[i].subscriber_type;
+
+              var write_access = res.subscribers[i].write_access;
+
+              var delete_access = res.subscribers[i].delete_access;
+
+              jsonVariable[
+                account_type + "_" + res.subscribers[i].subscriber.id
+              ] = {
+                account_id: account_id,
+                account_type: account_type,
+                write_access: write_access,
+                delete_access: delete_access,
+              };
             }
-            var account_id = res.subscribers[i].subscriber.id;
+          }
+        }
 
-            var account_type = res.subscribers[i].subscriber_type;
-
-            var write_access = res.subscribers[i].write_access;
-
-            var delete_access = res.subscribers[i].delete_access;
-
-            jsonVariable[
-              account_type + "_" + res.subscribers[i].subscriber.id
-            ] = {
-              account_id: account_id,
-              account_type: account_type,
+        var write_access = document.getElementById("write_access").checked;
+        var delete_access = document.getElementById("delete_access").checked;
+        for (i = 0; i < person_array.length; i++) {
+          if (!(person_array[i] in jsonVariable)) {
+            jsonVariable[person_array[i]] = {
+              account_id: person_array[i].split("_")[1],
+              account_type: person_array[i].split("_")[0].replace("_", ""),
               write_access: write_access,
               delete_access: delete_access,
             };
@@ -274,5 +293,31 @@ $(document).ready(function () {
         document.getElementById("alert-message").innerHTML = "Error sharing :(";
       });
     return response;
+  }
+  async function getPerson() {
+    var len = email_array.length;
+    x = 0;
+    while (x < len) {
+      a = await fetch(
+        "https://exocloud.syncedtool.ca/guests/1479/lookup/?show_email=1&exclude_self=1&term=" +
+          email_array[x]
+      );
+
+      b = await a.json();
+
+      for (y = 0; y < b.length; y++) {
+        if (b[y].account_type == "person") {
+          person_array.push(b[y].account_type + "_" + b[y].value);
+          console.log(email_array[x]);
+          email_array.splice(x, 1);
+
+          x--;
+          len--;
+          break;
+        }
+      }
+      x++;
+    }
+    return;
   }
 });
