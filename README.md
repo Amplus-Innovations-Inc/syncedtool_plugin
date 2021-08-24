@@ -15,7 +15,7 @@ This plugin assists users in sharing files in bulk on Syncedtool through uploadi
 
 On the left side are two buttons used to upload the link and email csv files, respectively. Both files must be uploaded in order for the share button to work.
 
-On the right are options for notifying users that files have been shared.
+On the right are options for how the link should be shared.
 
 ### Mode Option
 
