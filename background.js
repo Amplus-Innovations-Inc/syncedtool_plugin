@@ -36,7 +36,7 @@ $(document).ready(function () {
               .getElementById("email_csv")
               .value.replace(/^.*[\\\/]/, "");
             document.getElementById("alert-message").innerHTML = "";
-            if (link_array.length != 0) {
+            if (document.getElementById("link-upload-button").disabled) {
               document.getElementById("submit-file").style.background =
                 "#e05b0d";
               document.getElementById("submit-file").disabled = false;
@@ -105,7 +105,7 @@ $(document).ready(function () {
               .getElementById("link_csv")
               .value.replace(/^.*[\\\/]/, "");
             document.getElementById("alert-message").innerHTML = "";
-            if (email_array.length != 0) {
+            if (document.getElementById("email-upload-button").disabled) {
               document.getElementById("submit-file").style.background =
                 "#e05b0d";
               document.getElementById("submit-file").disabled = false;
@@ -198,31 +198,35 @@ $(document).ready(function () {
             delete_access: delete_access, //change
           };
         }
-        for (i = 0; i < res.subscribers.length; i++) {
-          if (res.subscribers[i].subscriber_type != "public") {
-            if (
-              email_array.includes(res.subscribers[i].subscriber.email) == true
-            ) {
-              delete jsonVariable[res.subscribers[i].subscriber.email];
+        if (document.getElementsByName("mode")[0].checked == true) {
+          for (i = 0; i < res.subscribers.length; i++) {
+            if (res.subscribers[i].subscriber_type != "public") {
+              if (
+                email_array.includes(res.subscribers[i].subscriber.email) ==
+                true
+              ) {
+                delete jsonVariable[res.subscribers[i].subscriber.email];
+              }
+              var account_id = res.subscribers[i].subscriber.id;
+
+              var account_type = res.subscribers[i].subscriber_type;
+
+              var write_access = res.subscribers[i].write_access;
+
+              var delete_access = res.subscribers[i].delete_access;
+
+              jsonVariable[
+                account_type + "_" + res.subscribers[i].subscriber.id
+              ] = {
+                account_id: account_id,
+                account_type: account_type,
+                write_access: write_access,
+                delete_access: delete_access,
+              };
             }
-            var account_id = res.subscribers[i].subscriber.id;
-
-            var account_type = res.subscribers[i].subscriber_type;
-
-            var write_access = res.subscribers[i].write_access;
-
-            var delete_access = res.subscribers[i].delete_access;
-
-            jsonVariable[
-              account_type + "_" + res.subscribers[i].subscriber.id
-            ] = {
-              account_id: account_id,
-              account_type: account_type,
-              write_access: write_access,
-              delete_access: delete_access,
-            };
           }
         }
+
         var write_access = document.getElementById("write_access").checked;
         var delete_access = document.getElementById("delete_access").checked;
         for (i = 0; i < person_array.length; i++) {
